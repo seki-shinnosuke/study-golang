@@ -20,9 +20,19 @@ https://marketplace.visualstudio.com/items?itemName=golang.Go
 https://www.docker.com/products/docker-desktop
 
 本プロジェクトはDocker Composeを利用しGolangおよびミドルウェアの依存関係を全てコンテナに集約する方式を採用しています  
-以下のコマンドで環境構築を行い、コンテナ内でアプリケーションを実行しローカルでのコード修正をホットリロードします  
 ```
 % cd ./app
 % make build
+```
+
+## 実行
+以下のコマンドでアプリケーションを実行します  
+ローカルで変更されたコードはホットリロードによりコンテナ内のアプリケーションに反映されます  
+```
 % make up
+```
+
+## 停止
+```
+% make down
 ```
