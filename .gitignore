@@ -1,0 +1,7 @@
+### Ignore ###
+/out/
+/tmp/
+/bin/
+### Settings ###
+.DS_Store
+/database/mysql_data/
