@@ -1,15 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"os"
+
+	"github.com/seki-shinnosuke/study-golang/config"
+	"github.com/seki-shinnosuke/study-golang/controller"
+	"github.com/seki-shinnosuke/study-golang/logger"
 )
 
-func helloHander(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Hello2 Normal Update</h1>")
-}
-
 func main() {
-	http.HandleFunc("/", helloHander)
-	http.ListenAndServe(":8080", nil)
+	os.Setenv("TZ", "Asia/Tokyo")
+	c := config.NewConfig("app.env")
+	r := controller.NewRouting(&c.APIServer)
+	if err := r.Run(); err != nil {
+		logger.Fatal("API起動エラー. err: %v", err)
+	}
 }
