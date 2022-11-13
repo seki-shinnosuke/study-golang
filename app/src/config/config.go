@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/go-playground/validator/v10"
-	"github.com/seki-shinnosuke/study-golang/logger"
+	"github.com/seki-shinnosuke/study-golang/util/logger"
 	"github.com/spf13/viper"
 )
 

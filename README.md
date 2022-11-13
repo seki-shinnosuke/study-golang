@@ -36,3 +36,4 @@ https://www.docker.com/products/docker-desktop
 ```
 % make down
 ```
+その他のコマンドは[Makefile](./app/Makefile)を参照してください

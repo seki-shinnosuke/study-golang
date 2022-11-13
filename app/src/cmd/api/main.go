@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/seki-shinnosuke/study-golang/config"
-	"github.com/seki-shinnosuke/study-golang/logger"
 	"github.com/seki-shinnosuke/study-golang/server"
+	"github.com/seki-shinnosuke/study-golang/util/logger"
 )
 
 func main() {
