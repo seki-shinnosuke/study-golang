@@ -12,7 +12,9 @@ type (
 	}
 
 	APIServer struct {
-		AppApiPort string `mapstructure:"APP_API_PORT" validate:"required"`
+		AppApiPort  string `mapstructure:"APP_API_PORT" validate:"required"`
+		GinMode     string `mapstructure:"GIN_MODE"`
+		CorsOrigins string `mapstructure:"CORS_ORIGINS"`
 	}
 )
 
@@ -25,15 +27,15 @@ func NewConfig(confPath string) *Config {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		logger.Fatal("設定読み込み失敗. err: %v", err)
+		logger.Fatal("Failed to read Configuration file. err: %v", err)
 	}
 	err = viper.Unmarshal(&c)
 	if err != nil {
-		logger.Fatal("環境変数読み込み失敗. err: %v", err)
+		logger.Fatal("Failed to read environment. err: %v", err)
 	}
 	validate := validator.New()
 	if err := validate.Struct(c); err != nil {
-		logger.Fatal("バリデーションエラー. err: %v", err)
+		logger.Fatal("validation error. err: %v", err)
 	}
 
 	return c
