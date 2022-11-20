@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/seki-shinnosuke/study-golang/config"
 	"github.com/seki-shinnosuke/study-golang/server/todo"
+	"github.com/seki-shinnosuke/study-golang/util/logger"
 )
 
 type Server struct {
@@ -45,9 +46,9 @@ func (server *Server) setCors() {
 			AllowCredentials: true,
 			MaxAge:           12 * time.Hour,
 		}),
-		gin.LoggerWithConfig(gin.LoggerConfig{
-			SkipPaths: []string{"/health"},
-		}))
+		gin.LoggerWithConfig(logger.CustomGinLogger([]string{"/health"})),
+		gin.Recovery(),
+	)
 }
 
 func (server *Server) setRouting() {
