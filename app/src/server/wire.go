@@ -8,7 +8,8 @@ import (
 
 	"github.com/google/wire"
 	"github.com/seki-shinnosuke/study-golang/config"
-	"github.com/seki-shinnosuke/study-golang/server/todo"
+	todoctrl "github.com/seki-shinnosuke/study-golang/controller/todo"
+	todouc "github.com/seki-shinnosuke/study-golang/usecase/todo"
 )
 
 func InitializeService(
@@ -16,7 +17,8 @@ func InitializeService(
 	db *sql.DB,
 ) *Server {
 	wire.Build(
-		todo.NewTodoService,
+		todoctrl.NewTodoController,
+		todouc.NewTodoUsecase,
 		NewServer,
 	)
 	return &Server{}

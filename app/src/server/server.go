@@ -8,25 +8,25 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/seki-shinnosuke/study-golang/config"
-	"github.com/seki-shinnosuke/study-golang/server/todo"
+	"github.com/seki-shinnosuke/study-golang/controller/todo"
 	"github.com/seki-shinnosuke/study-golang/util/logger"
 )
 
 type Server struct {
 	configAPIServer *config.APIServer
 	Gin             *gin.Engine
-	todoService     *todo.TodoService
+	todoController  *todo.TodoController
 }
 
 func NewServer(
 	configAPIServer *config.APIServer,
-	todoService *todo.TodoService,
+	todoController *todo.TodoController,
 ) *Server {
 	gin.SetMode(configAPIServer.GinMode)
 	server := &Server{
 		configAPIServer: configAPIServer,
 		Gin:             gin.New(),
-		todoService:     todoService,
+		todoController:  todoController,
 	}
 	server.setCors()
 	server.setRouting()
@@ -57,11 +57,11 @@ func (server *Server) setRouting() {
 	})
 	apiV1 := server.Gin.Group("/api/v1")
 	{
-		apiV1.GET("/tasks", server.todoService.GetTodos)
-		apiV1.GET("/tasks:id", server.todoService.GetTodo)
-		apiV1.POST("/tasks", server.todoService.RegisterTodo)
-		apiV1.PUT("/tasks:id", server.todoService.UpdateTodo)
-		apiV1.DELETE("/tasks:id", server.todoService.DeleteTodo)
+		apiV1.GET("/tasks", server.todoController.GetTodos)
+		apiV1.GET("/tasks:id", server.todoController.GetTodo)
+		apiV1.POST("/tasks", server.todoController.RegisterTodo)
+		apiV1.PUT("/tasks:id", server.todoController.UpdateTodo)
+		apiV1.DELETE("/tasks:id", server.todoController.DeleteTodo)
 	}
 	server.Gin.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"message": "The page not found"})
