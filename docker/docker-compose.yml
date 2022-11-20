@@ -12,7 +12,7 @@ services:
       - "23306:23306"
     volumes:
       - ../database/ddl:/docker-entrypoint-initdb.d
-      - ../database/mysql_data:/var/lib/mysql
+      - ../mysql_data:/var/lib/mysql
   app:
     depends_on:
       - mysql-db
@@ -27,6 +27,7 @@ services:
       - "8080:8080"
     volumes:
       - ../app:/app
+      - ../database:/database
     env_file:
       - ../app/src/app.env
 

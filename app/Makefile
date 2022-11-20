@@ -9,4 +9,6 @@ down:
 tidy:
 	$(DOCKER_RUN) go mod tidy
 wire-api:
-	$(DOCKER_RUN) sh -c "cd src/cmd/api/ && wire"
+	$(DOCKER_RUN) sh -c "cd cmd/api/ && wire"
+sqlboiler:
+	$(DOCKER_RUN) sh -c "cd ../../ && sqlboiler mysql -c database/sqlboiler/config.toml -o app/src/model/db -p model --wipe"

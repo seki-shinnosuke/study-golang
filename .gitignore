@@ -4,4 +4,4 @@ out/
 bin/
 ### Settings ###
 .DS_Store
-database/mysql_data/
+mysql_data/
