@@ -9,12 +9,21 @@ import (
 type (
 	Config struct {
 		APIServer `mapstructure:",squash" validate:"required"`
+		RDB       `mapstructure:",squash" validate:"required"`
+		TimeZone  string `mapstructure:"TIME_ZONE" validate:"required"`
 	}
 
 	APIServer struct {
 		AppApiPort  string `mapstructure:"APP_API_PORT" validate:"required"`
 		GinMode     string `mapstructure:"GIN_MODE"`
 		CorsOrigins string `mapstructure:"CORS_ORIGINS"`
+	}
+
+	RDB struct {
+		Host   string `mapstructure:"RDB_HOST" validate:"required"`
+		DBName string `mapstructure:"RDB_NAME" validate:"required"`
+		User   string `mapstructure:"RDB_USER" validate:"required"`
+		Passwd string `mapstructure:"RDB_PASSWORD" validate:"required"`
 	}
 )
 

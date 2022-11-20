@@ -7,13 +7,14 @@
 package server
 
 import (
+	"database/sql"
 	"github.com/seki-shinnosuke/study-golang/config"
 	"github.com/seki-shinnosuke/study-golang/server/todo"
 )
 
 // Injectors from wire.go:
 
-func InitializeService(configAPIServer *config.APIServer) *Server {
+func InitializeService(configAPIServer *config.APIServer, db *sql.DB) *Server {
 	todoService := todo.NewTodoService()
 	server := NewServer(configAPIServer, todoService)
 	return server

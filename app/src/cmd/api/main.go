@@ -9,9 +9,15 @@ import (
 )
 
 func main() {
-	os.Setenv("TZ", "Asia/Tokyo")
 	c := config.NewConfig("app.env")
-	s := server.InitializeService(&c.APIServer)
+	os.Setenv("TZ", c.TimeZone)
+
+	db, err := config.NewDB(c.TimeZone, &c.RDB)
+	if err != nil {
+		logger.Fatal("Failed to Connect Database. err: %v", err)
+	}
+
+	s := server.InitializeService(&c.APIServer, db)
 	if err := s.Run(); err != nil {
 		logger.Fatal("Failed to start API server. err: %v", err)
 	}
