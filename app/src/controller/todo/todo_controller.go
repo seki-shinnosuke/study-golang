@@ -19,22 +19,23 @@ func NewTodoController(
 	}
 }
 
-func (s *TodoController) GetTodos(ctx *gin.Context) {
+func (ctrl *TodoController) GetTodos(ctx *gin.Context) {
+	ctrl.todoUsecase.GetTodos()
 	ctx.JSON(http.StatusOK, "")
 }
 
-func (s *TodoController) GetTodo(ctx *gin.Context) {
+func (ctrl *TodoController) GetTodo(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, "")
 }
 
-func (s *TodoController) RegisterTodo(ctx *gin.Context) {
+func (ctrl *TodoController) RegisterTodo(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, "")
 }
 
-func (s *TodoController) UpdateTodo(ctx *gin.Context) {
+func (ctrl *TodoController) UpdateTodo(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, "")
 }
 
-func (s *TodoController) DeleteTodo(ctx *gin.Context) {
+func (ctrl *TodoController) DeleteTodo(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, "")
 }

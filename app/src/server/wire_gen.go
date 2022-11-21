@@ -16,7 +16,7 @@ import (
 // Injectors from wire.go:
 
 func InitializeService(configAPIServer *config.APIServer, db *sql.DB) *Server {
-	todoUsecase := todo.NewTodoUsecase(db)
+	todoUsecase := todo.NewTodoUsecase()
 	todoController := todo2.NewTodoController(todoUsecase)
 	server := NewServer(configAPIServer, todoController)
 	return server

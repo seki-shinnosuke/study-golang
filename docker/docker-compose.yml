@@ -30,6 +30,8 @@ services:
       - ../database:/database
     env_file:
       - ../app/src/app.env
+    environment:
+      - RDB_HOST=mysql-db:23306
 
 networks:
   study-golang:

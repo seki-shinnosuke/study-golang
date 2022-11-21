@@ -11,4 +11,6 @@ tidy:
 wire-api:
 	$(DOCKER_RUN) sh -c "cd server/ && wire"
 sqlboiler:
-	$(DOCKER_RUN) sh -c "cd ../../ && sqlboiler mysql -c database/sqlboiler/config.toml -o app/src/model/db -p model --wipe"
+	$(DOCKER_RUN) sh -c "cd ../../ && sqlboiler mysql -c database/sqlboiler/config.toml -o app/src/model/db -p model --add-global-variants --wipe"
+local-run:
+	cd src && go run cmd/api/main.go

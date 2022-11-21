@@ -1,21 +1,25 @@
 package todo
 
 import (
-	"database/sql"
+	"context"
+
+	models "github.com/seki-shinnosuke/study-golang/model/db"
+	"github.com/seki-shinnosuke/study-golang/util/logger"
 )
 
 type TodoUsecase struct {
-	db *sql.DB
 }
 
-func NewTodoUsecase(
-	db *sql.DB,
-) *TodoUsecase {
-	return &TodoUsecase{
-		db: db,
+func NewTodoUsecase() *TodoUsecase {
+	return &TodoUsecase{}
+}
+
+func (uc *TodoUsecase) GetTodos() {
+	ctx := context.Background()
+	todos, err := models.TaskManagements().AllG(ctx)
+
+	if err != nil {
+
 	}
-}
-
-func (todoUsecase *TodoUsecase) GetTodos() {
-
+	logger.Info("%s", todos)
 }

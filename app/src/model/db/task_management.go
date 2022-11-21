@@ -398,6 +398,11 @@ func AddTaskManagementHook(hookPoint boil.HookPoint, taskManagementHook TaskMana
 	}
 }
 
+// OneG returns a single taskManagement record from the query using the global executor.
+func (q taskManagementQuery) OneG(ctx context.Context) (*TaskManagement, error) {
+	return q.One(ctx, boil.GetContextDB())
+}
+
 // One returns a single taskManagement record from the query.
 func (q taskManagementQuery) One(ctx context.Context, exec boil.ContextExecutor) (*TaskManagement, error) {
 	o := &TaskManagement{}
@@ -417,6 +422,11 @@ func (q taskManagementQuery) One(ctx context.Context, exec boil.ContextExecutor)
 	}
 
 	return o, nil
+}
+
+// AllG returns all TaskManagement records from the query using the global executor.
+func (q taskManagementQuery) AllG(ctx context.Context) (TaskManagementSlice, error) {
+	return q.All(ctx, boil.GetContextDB())
 }
 
 // All returns all TaskManagement records from the query.
@@ -439,6 +449,11 @@ func (q taskManagementQuery) All(ctx context.Context, exec boil.ContextExecutor)
 	return o, nil
 }
 
+// CountG returns the count of all TaskManagement records in the query using the global executor
+func (q taskManagementQuery) CountG(ctx context.Context) (int64, error) {
+	return q.Count(ctx, boil.GetContextDB())
+}
+
 // Count returns the count of all TaskManagement records in the query.
 func (q taskManagementQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
@@ -452,6 +467,11 @@ func (q taskManagementQuery) Count(ctx context.Context, exec boil.ContextExecuto
 	}
 
 	return count, nil
+}
+
+// ExistsG checks if the row exists in the table using the global executor.
+func (q taskManagementQuery) ExistsG(ctx context.Context) (bool, error) {
+	return q.Exists(ctx, boil.GetContextDB())
 }
 
 // Exists checks if the row exists in the table.
@@ -479,6 +499,11 @@ func TaskManagements(mods ...qm.QueryMod) taskManagementQuery {
 	}
 
 	return taskManagementQuery{q}
+}
+
+// FindTaskManagementG retrieves a single record by ID.
+func FindTaskManagementG(ctx context.Context, taskID int, selectCols ...string) (*TaskManagement, error) {
+	return FindTaskManagement(ctx, boil.GetContextDB(), taskID, selectCols...)
 }
 
 // FindTaskManagement retrieves a single record by ID with an executor.
@@ -509,6 +534,11 @@ func FindTaskManagement(ctx context.Context, exec boil.ContextExecutor, taskID i
 	}
 
 	return taskManagementObj, nil
+}
+
+// InsertG a single record. See Insert for whitelist behavior description.
+func (o *TaskManagement) InsertG(ctx context.Context, columns boil.Columns) error {
+	return o.Insert(ctx, boil.GetContextDB(), columns)
 }
 
 // Insert a single record using an executor.
@@ -617,6 +647,12 @@ CacheNoHooks:
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
+// UpdateG a single TaskManagement record using the global executor.
+// See Update for more documentation.
+func (o *TaskManagement) UpdateG(ctx context.Context, columns boil.Columns) (int64, error) {
+	return o.Update(ctx, boil.GetContextDB(), columns)
+}
+
 // Update uses an executor to update the TaskManagement.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
@@ -680,6 +716,11 @@ func (o *TaskManagement) Update(ctx context.Context, exec boil.ContextExecutor, 
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
+// UpdateAllG updates all rows with the specified column values.
+func (q taskManagementQuery) UpdateAllG(ctx context.Context, cols M) (int64, error) {
+	return q.UpdateAll(ctx, boil.GetContextDB(), cols)
+}
+
 // UpdateAll updates all rows with the specified column values.
 func (q taskManagementQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
@@ -695,6 +736,11 @@ func (q taskManagementQuery) UpdateAll(ctx context.Context, exec boil.ContextExe
 	}
 
 	return rowsAff, nil
+}
+
+// UpdateAllG updates all rows with the specified column values.
+func (o TaskManagementSlice) UpdateAllG(ctx context.Context, cols M) (int64, error) {
+	return o.UpdateAll(ctx, boil.GetContextDB(), cols)
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
@@ -743,6 +789,11 @@ func (o TaskManagementSlice) UpdateAll(ctx context.Context, exec boil.ContextExe
 		return 0, errors.Wrap(err, "model: unable to retrieve rows affected all in update all taskManagement")
 	}
 	return rowsAff, nil
+}
+
+// UpsertG attempts an insert, and does an update or ignore on conflict.
+func (o *TaskManagement) UpsertG(ctx context.Context, updateColumns, insertColumns boil.Columns) error {
+	return o.Upsert(ctx, boil.GetContextDB(), updateColumns, insertColumns)
 }
 
 var mySQLTaskManagementUniqueColumns = []string{
@@ -894,6 +945,12 @@ CacheNoHooks:
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
+// DeleteG deletes a single TaskManagement record.
+// DeleteG will match against the primary key column to find the record to delete.
+func (o *TaskManagement) DeleteG(ctx context.Context) (int64, error) {
+	return o.Delete(ctx, boil.GetContextDB())
+}
+
 // Delete deletes a single TaskManagement record with an executor.
 // Delete will match against the primary key column to find the record to delete.
 func (o *TaskManagement) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
@@ -930,6 +987,10 @@ func (o *TaskManagement) Delete(ctx context.Context, exec boil.ContextExecutor) 
 	return rowsAff, nil
 }
 
+func (q taskManagementQuery) DeleteAllG(ctx context.Context) (int64, error) {
+	return q.DeleteAll(ctx, boil.GetContextDB())
+}
+
 // DeleteAll deletes all matching rows.
 func (q taskManagementQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
@@ -949,6 +1010,11 @@ func (q taskManagementQuery) DeleteAll(ctx context.Context, exec boil.ContextExe
 	}
 
 	return rowsAff, nil
+}
+
+// DeleteAllG deletes all rows in the slice.
+func (o TaskManagementSlice) DeleteAllG(ctx context.Context) (int64, error) {
+	return o.DeleteAll(ctx, boil.GetContextDB())
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
@@ -1000,6 +1066,15 @@ func (o TaskManagementSlice) DeleteAll(ctx context.Context, exec boil.ContextExe
 	return rowsAff, nil
 }
 
+// ReloadG refetches the object from the database using the primary keys.
+func (o *TaskManagement) ReloadG(ctx context.Context) error {
+	if o == nil {
+		return errors.New("model: no TaskManagement provided for reload")
+	}
+
+	return o.Reload(ctx, boil.GetContextDB())
+}
+
 // Reload refetches the object from the database
 // using the primary keys with an executor.
 func (o *TaskManagement) Reload(ctx context.Context, exec boil.ContextExecutor) error {
@@ -1010,6 +1085,16 @@ func (o *TaskManagement) Reload(ctx context.Context, exec boil.ContextExecutor) 
 
 	*o = *ret
 	return nil
+}
+
+// ReloadAllG refetches every row with matching primary key column values
+// and overwrites the original object slice with the newly updated slice.
+func (o *TaskManagementSlice) ReloadAllG(ctx context.Context) error {
+	if o == nil {
+		return errors.New("model: empty TaskManagementSlice provided for reload all")
+	}
+
+	return o.ReloadAll(ctx, boil.GetContextDB())
 }
 
 // ReloadAll refetches every row with matching primary key column values
@@ -1039,6 +1124,11 @@ func (o *TaskManagementSlice) ReloadAll(ctx context.Context, exec boil.ContextEx
 	*o = slice
 
 	return nil
+}
+
+// TaskManagementExistsG checks if the TaskManagement row exists.
+func TaskManagementExistsG(ctx context.Context, taskID int) (bool, error) {
+	return TaskManagementExists(ctx, boil.GetContextDB(), taskID)
 }
 
 // TaskManagementExists checks if the TaskManagement row exists.

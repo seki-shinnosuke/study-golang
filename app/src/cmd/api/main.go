@@ -6,6 +6,7 @@ import (
 	"github.com/seki-shinnosuke/study-golang/config"
 	"github.com/seki-shinnosuke/study-golang/server"
 	"github.com/seki-shinnosuke/study-golang/util/logger"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 	if err != nil {
 		logger.Fatal("Failed to Connect Database. err: %v", err)
 	}
+	boil.SetDB(db)
 
 	s := server.InitializeService(&c.APIServer, db)
 	if err := s.Run(); err != nil {
