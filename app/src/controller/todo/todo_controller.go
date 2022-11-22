@@ -20,8 +20,8 @@ func NewTodoController(
 }
 
 func (ctrl *TodoController) GetTodos(ctx *gin.Context) {
-	ctrl.todoUsecase.GetTodos()
-	ctx.JSON(http.StatusOK, "")
+	todos, _ := ctrl.todoUsecase.GetTodos()
+	ctx.JSON(http.StatusOK, todos)
 }
 
 func (ctrl *TodoController) GetTodo(ctx *gin.Context) {
