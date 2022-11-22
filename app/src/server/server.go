@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/seki-shinnosuke/study-golang/config"
 	"github.com/seki-shinnosuke/study-golang/controller/todo"
+	e "github.com/seki-shinnosuke/study-golang/error"
 	"github.com/seki-shinnosuke/study-golang/util/logger"
 )
 
@@ -58,13 +59,13 @@ func (server *Server) setRouting() {
 	apiV1 := server.Gin.Group("/api/v1")
 	{
 		apiV1.GET("/tasks", server.todoController.GetTodos)
-		apiV1.GET("/tasks:id", server.todoController.GetTodo)
+		apiV1.GET("/tasks/:id", server.todoController.GetTodo)
 		apiV1.POST("/tasks", server.todoController.RegisterTodo)
-		apiV1.PUT("/tasks:id", server.todoController.UpdateTodo)
-		apiV1.DELETE("/tasks:id", server.todoController.DeleteTodo)
+		apiV1.PUT("/tasks/:id", server.todoController.UpdateTodo)
+		apiV1.DELETE("/tasks/:id", server.todoController.DeleteTodo)
 	}
 	server.Gin.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{"message": "The page not found"})
+		c.JSON(e.NotFound.StatusCode, e.NotFound)
 	})
 }
 
