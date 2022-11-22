@@ -43,7 +43,8 @@ func (server *Server) setCors() {
 		cors.New(cors.Config{
 			AllowOrigins:     corsOrigins,
 			AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-			AllowHeaders:     []string{"Access-Control-Allow-Headers", "Content-Length", "Content-Type", "Authorization"},
+			AllowHeaders:     []string{"Access-Control-Allow-Headers", "Content-Type", "Authorization"},
+			ExposeHeaders:    []string{"Content-Length"},
 			AllowCredentials: true,
 			MaxAge:           12 * time.Hour,
 		}),
