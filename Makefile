@@ -1,11 +1,12 @@
-DOCKER_RUN=docker-compose -f ../docker/docker-compose.yml run --rm app
+DOCKER_PATH=docker-compose -f docker/docker-compose.yml
+DOCKER_RUN=$(DOCKER_PATH) run --rm app
 
 build:
-	docker-compose -f ../docker/docker-compose.yml build
+	$(DOCKER_PATH) build
 up:
-	docker-compose -f ../docker/docker-compose.yml up -d
+	$(DOCKER_PATH) up -d
 down:
-	docker-compose -f ../docker/docker-compose.yml down
+	$(DOCKER_PATH) down
 tidy:
 	$(DOCKER_RUN) go mod tidy
 wire-api:
@@ -13,4 +14,4 @@ wire-api:
 sqlboiler:
 	$(DOCKER_RUN) sh -c "cd ../../ && sqlboiler mysql -c database/sqlboiler/config.toml -o app/src/model/db -p model --add-global-variants --wipe"
 local-run:
-	cd src && go run cmd/api/main.go
+	cd app/src && go run cmd/api/main.go

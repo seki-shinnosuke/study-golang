@@ -21,7 +21,6 @@ https://www.docker.com/products/docker-desktop
 
 本プロジェクトはDocker Composeを利用しGolangおよびミドルウェアの依存関係を全てコンテナに集約する方式を採用しています  
 ```
-% cd ./app
 % make build
 ```
 
@@ -36,4 +35,4 @@ https://www.docker.com/products/docker-desktop
 ```
 % make down
 ```
-その他のコマンドは[Makefile](./app/Makefile)を参照してください
+その他のコマンドは[Makefile](./Makefile)を参照してください

@@ -21,5 +21,5 @@ src
 1. APIのビジネスロジック/コントローラーを作成  
 2. server.goのNewServerに作成したコントローラーの構造体を設定  
 3. server.goのsetRoutingにAPIのルーティングを設定  
-4. wire.gonのInitializeServiceにコントローラーの構造体を設定し`make wire`でDI関数を自動生成
+4. wire.gonのInitializeServiceにコントローラーの構造体を設定し`make wire-api`でDI関数を自動生成
   
