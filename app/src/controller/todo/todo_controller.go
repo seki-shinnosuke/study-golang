@@ -61,6 +61,11 @@ func (ctrl *TodoController) RegisterTask(ctx *gin.Context) {
 		return
 	}
 
+	if !requestBody.Validate() {
+		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
+		return
+	}
+
 	response, err := ctrl.todoUsecase.RegisterTask(requestBody)
 
 	if err != nil {
@@ -83,6 +88,11 @@ func (ctrl *TodoController) UpdateTask(ctx *gin.Context) {
 	var requestBody request.Task
 
 	if err := ctx.ShouldBindJSON(&requestBody); err != nil {
+		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
+		return
+	}
+
+	if !requestBody.Validate() {
 		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
 		return
 	}
