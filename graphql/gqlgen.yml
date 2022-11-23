@@ -1,0 +1,19 @@
+schema:
+  - ./schema/*.graphql
+
+model:
+  filename: ../app/src/model/graph/model_gen.go
+
+resolver:
+  layout: follow-schema
+  dir: ../app/src/model/graph
+
+omit_slice_element_pointers: true
+
+models:
+  ID:
+    model: github.com/99designs/gqlgen/graphql.ID
+  Int:
+    model: github.com/99designs/gqlgen/graphql.Int64
+  Date:
+    model: github.com/99designs/gqlgen/graphql.Time

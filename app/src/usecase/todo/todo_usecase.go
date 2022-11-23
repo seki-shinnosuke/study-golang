@@ -6,8 +6,8 @@ import (
 
 	e "github.com/seki-shinnosuke/study-golang/error"
 	model "github.com/seki-shinnosuke/study-golang/model/db"
-	request "github.com/seki-shinnosuke/study-golang/model/request/todo"
-	response "github.com/seki-shinnosuke/study-golang/model/response/todo"
+	request "github.com/seki-shinnosuke/study-golang/model/rest/request/todo"
+	response "github.com/seki-shinnosuke/study-golang/model/rest/response/todo"
 	"github.com/seki-shinnosuke/study-golang/util/logger"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )

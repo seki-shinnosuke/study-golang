@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	e "github.com/seki-shinnosuke/study-golang/error"
-	request "github.com/seki-shinnosuke/study-golang/model/request/todo"
-	response "github.com/seki-shinnosuke/study-golang/model/response/todo"
+	request "github.com/seki-shinnosuke/study-golang/model/rest/request/todo"
+	response "github.com/seki-shinnosuke/study-golang/model/rest/response/todo"
 	todouc "github.com/seki-shinnosuke/study-golang/usecase/todo"
 )
 

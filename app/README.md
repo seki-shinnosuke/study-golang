@@ -12,8 +12,8 @@ src
 ├── error           //カスタマイズしたエラーコード
 ├── model
 │   ├── db          //SQLBoilerを利用したORM
-│   ├── request     //REST APIのリクエスト構造を配置
-│   └── response    //REST APIのレスポンス構造を配置
+│   ├── graphql     //TODO
+│   └── rest        //REST APIのリクエストレスポンス構造を配置
 ├── server
 │   ├── server.go   //Ginを利用したREST APIの設定
 │   └── wire.go     //wireを利用したDIの設定
