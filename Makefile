@@ -13,5 +13,7 @@ wire-api:
 	$(DOCKER_RUN) sh -c "cd server/ && wire"
 sqlboiler:
 	$(DOCKER_RUN) sh -c "cd ../../ && sqlboiler mysql -c database/sqlboiler/config.toml -o app/src/model/db -p model --add-global-variants --wipe"
+graphqlgen:
+	$(DOCKER_RUN) sh -c "gqlgen gen"
 local-run:
 	cd app/src && go run cmd/api/main.go

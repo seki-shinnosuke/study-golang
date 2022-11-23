@@ -13,6 +13,7 @@ services:
     volumes:
       - ../database/ddl:/docker-entrypoint-initdb.d
       - ../mysql_data:/var/lib/mysql
+
   app:
     depends_on:
       - mysql-db
@@ -28,6 +29,7 @@ services:
     volumes:
       - ../app:/app
       - ../database:/database
+      - ../graphql:/graphql
     env_file:
       - ../app/src/app.env
     environment:

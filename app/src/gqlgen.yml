@@ -1,12 +1,19 @@
 schema:
-  - ./schema/*.graphql
+  - ../../graphql/*.graphql
+
+exec:
+  layout: follow-schema
+  dir: ./server/graphql
+  package: graphql
 
 model:
-  filename: ../app/src/model/graph/model_gen.go
+  filename: ./model/graphql/model_gen.go
+  package: model
 
 resolver:
   layout: follow-schema
-  dir: ../app/src/model/graph
+  dir: ./server/graphql
+  package: graphql
 
 omit_slice_element_pointers: true
 

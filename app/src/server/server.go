@@ -5,11 +5,15 @@ import (
 	"strings"
 	"time"
 
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/transport"
+	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/seki-shinnosuke/study-golang/config"
 	"github.com/seki-shinnosuke/study-golang/controller/todo"
 	e "github.com/seki-shinnosuke/study-golang/error"
+	gq "github.com/seki-shinnosuke/study-golang/server/graphql"
 	"github.com/seki-shinnosuke/study-golang/util/logger"
 )
 
@@ -53,10 +57,34 @@ func (server *Server) setCors() {
 	)
 }
 
+func graphqlHandler() gin.HandlerFunc {
+	h := handler.New(gq.NewExecutableSchema(gq.Config{Resolvers: &gq.Resolver{}}))
+	h.AddTransport(transport.POST{})
+
+	return func(c *gin.Context) {
+		h.ServeHTTP(c.Writer, c.Request)
+	}
+}
+
+func playgroundHandler() gin.HandlerFunc {
+	h := playground.Handler("GraphQL", "/graphql")
+
+	return func(c *gin.Context) {
+		h.ServeHTTP(c.Writer, c.Request)
+	}
+}
+
 func (server *Server) setRouting() {
 	server.Gin.GET("/health", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, "OK")
 	})
+	// GraphQL
+	graphql := server.Gin.Group("/graphql")
+	{
+		graphql.POST("", graphqlHandler())
+		graphql.GET("/playground", playgroundHandler())
+	}
+	//REST API
 	apiV1 := server.Gin.Group("/api/v1")
 	{
 		apiV1.GET("/tasks", server.todoController.GetTasks)
