@@ -60,10 +60,10 @@ func (server *Server) setRouting() {
 	apiV1 := server.Gin.Group("/api/v1")
 	{
 		apiV1.GET("/tasks", server.todoController.GetTasks)
-		apiV1.GET("/tasks/:id", server.todoController.GetTask)
+		apiV1.GET("/tasks/:taskId", server.todoController.GetTask)
 		apiV1.POST("/tasks", server.todoController.RegisterTask)
-		apiV1.PUT("/tasks/:id", server.todoController.UpdateTask)
-		apiV1.DELETE("/tasks/:id", server.todoController.DeleteTask)
+		apiV1.PUT("/tasks/:taskId", server.todoController.UpdateTask)
+		apiV1.DELETE("/tasks/:taskId", server.todoController.DeleteTask)
 	}
 	server.Gin.NoRoute(func(c *gin.Context) {
 		c.JSON(e.NotFound.StatusCode, e.NotFound)

@@ -86,6 +86,38 @@ func (uc *TodoUsecase) RegisterTask(task request.Task) (*response.TodoDetailResp
 	}}, nil
 }
 
+func (uc *TodoUsecase) UpdateTask(targetTaskId int, task request.Task) (*response.TodoDetailResponse, error) {
+	ctx := context.Background()
+	dbUpdateTask, err := model.FindTaskManagementG(ctx, targetTaskId)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, e.WithError(err, e.DataNotFound)
+		}
+		return nil, e.WithError(err, e.InternalServerError)
+	}
+
+	dbUpdateTask.PersonName = task.PersonName
+	dbUpdateTask.TaskName = task.TaskName
+	dbUpdateTask.DeadlineDate = task.DeadlineDate
+	dbUpdateTask.TaskStatus = task.TaskStatus
+
+	count, err := dbUpdateTask.UpdateG(ctx, boil.Infer())
+
+	if err != nil || count != 1 {
+		logger.Error(" %v", err)
+		return nil, e.WithError(err, e.InternalServerError)
+	}
+
+	return &response.TodoDetailResponse{Task: response.Task{
+		TaskId:       dbUpdateTask.TaskID,
+		PersonName:   dbUpdateTask.PersonName,
+		TaskName:     dbUpdateTask.TaskName,
+		DeadlineDate: dbUpdateTask.DeadlineDate,
+		TaskStatus:   dbUpdateTask.TaskStatus,
+	}}, nil
+}
+
 func (uc *TodoUsecase) DeleteTask(targetTaskId int) error {
 	ctx := context.Background()
 	count, err := model.TaskManagements(model.TaskManagementWhere.TaskID.EQ(targetTaskId)).DeleteAllG(ctx)

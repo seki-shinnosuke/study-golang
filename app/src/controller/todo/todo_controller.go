@@ -42,7 +42,7 @@ func (ctrl *TodoController) GetTask(ctx *gin.Context) {
 		return
 	}
 
-	response, err := ctrl.todoUsecase.GetTask(uriParam.Id)
+	response, err := ctrl.todoUsecase.GetTask(uriParam.TaskId)
 
 	if err != nil {
 		appError := e.Cast(err)
@@ -73,7 +73,29 @@ func (ctrl *TodoController) RegisterTask(ctx *gin.Context) {
 }
 
 func (ctrl *TodoController) UpdateTask(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, "")
+	var uriParam request.UriParam
+
+	if err := ctx.ShouldBindUri(&uriParam); err != nil {
+		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
+		return
+	}
+
+	var requestBody request.Task
+
+	if err := ctx.ShouldBindJSON(&requestBody); err != nil {
+		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
+		return
+	}
+
+	response, err := ctrl.todoUsecase.UpdateTask(uriParam.TaskId, requestBody)
+
+	if err != nil {
+		appError := e.Cast(err)
+		ctx.JSON(appError.StatusCode, appError)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response)
 }
 
 func (ctrl *TodoController) DeleteTask(ctx *gin.Context) {
@@ -83,7 +105,7 @@ func (ctrl *TodoController) DeleteTask(ctx *gin.Context) {
 		return
 	}
 
-	err := ctrl.todoUsecase.DeleteTask(uriParam.Id)
+	err := ctrl.todoUsecase.DeleteTask(uriParam.TaskId)
 	if err != nil {
 		appError := e.Cast(err)
 		ctx.JSON(appError.StatusCode, appError)

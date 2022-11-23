@@ -6,7 +6,7 @@ import (
 
 type (
 	UriParam struct {
-		Id int `uri:"id" binding:"required"`
+		TaskId int `uri:"taskId" binding:"required"`
 	}
 
 	Task struct {
