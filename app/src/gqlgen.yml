@@ -2,8 +2,7 @@ schema:
   - ../../graphql/*.graphql
 
 exec:
-  layout: follow-schema
-  dir: ./server/graphql
+  filename: ./server/graphql/generated.go
   package: graphql
 
 model:
