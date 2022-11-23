@@ -6,7 +6,10 @@ import (
 
 	e "github.com/seki-shinnosuke/study-golang/error"
 	model "github.com/seki-shinnosuke/study-golang/model/db"
+	request "github.com/seki-shinnosuke/study-golang/model/request/todo"
 	response "github.com/seki-shinnosuke/study-golang/model/response/todo"
+	"github.com/seki-shinnosuke/study-golang/util/logger"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 type TodoUsecase struct {
@@ -16,31 +19,31 @@ func NewTodoUsecase() *TodoUsecase {
 	return &TodoUsecase{}
 }
 
-func (uc *TodoUsecase) GetTodos() (*response.TaskResponse, error) {
+func (uc *TodoUsecase) GetTasks() (*response.TodoResponse, error) {
 	ctx := context.Background()
-	todos, err := model.TaskManagements().AllG(ctx)
+	dbTasks, err := model.TaskManagements().AllG(ctx)
 
 	if err != nil {
 		return nil, e.WithError(err, e.InternalServerError)
 	}
 
-	tasks := make([]response.Task, 0, len(todos))
-	for _, todo := range todos {
+	tasks := make([]response.Task, 0, len(dbTasks))
+	for _, dbTask := range dbTasks {
 		tasks = append(tasks, response.Task{
-			TaskId:       todo.TaskID,
-			PersonName:   todo.PersonName,
-			TaskName:     todo.TaskName,
-			DeadlineDate: todo.DeadlineDate.Time,
-			TaskStatus:   todo.TaskStatus,
+			TaskId:       dbTask.TaskID,
+			PersonName:   dbTask.PersonName,
+			TaskName:     dbTask.TaskName,
+			DeadlineDate: dbTask.DeadlineDate,
+			TaskStatus:   dbTask.TaskStatus,
 		})
 	}
 
-	return &response.TaskResponse{Tasks: tasks}, nil
+	return &response.TodoResponse{Tasks: tasks}, nil
 }
 
-func (uc *TodoUsecase) GetTodo(targetTaskId int) (*response.TaskDetailResponse, error) {
+func (uc *TodoUsecase) GetTask(targetTaskId int) (*response.TodoDetailResponse, error) {
 	ctx := context.Background()
-	todo, err := model.FindTaskManagementG(ctx, targetTaskId)
+	dbTask, err := model.FindTaskManagementG(ctx, targetTaskId)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -49,20 +52,46 @@ func (uc *TodoUsecase) GetTodo(targetTaskId int) (*response.TaskDetailResponse, 
 		return nil, e.WithError(err, e.InternalServerError)
 	}
 
-	return &response.TaskDetailResponse{Task: response.Task{
-		TaskId:       todo.TaskID,
-		PersonName:   todo.PersonName,
-		TaskName:     todo.TaskName,
-		DeadlineDate: todo.DeadlineDate.Time,
-		TaskStatus:   todo.TaskStatus,
+	return &response.TodoDetailResponse{Task: response.Task{
+		TaskId:       dbTask.TaskID,
+		PersonName:   dbTask.PersonName,
+		TaskName:     dbTask.TaskName,
+		DeadlineDate: dbTask.DeadlineDate,
+		TaskStatus:   dbTask.TaskStatus,
 	}}, nil
 }
 
-func (uc *TodoUsecase) DeleteTodo(targetTaskId int) error {
+func (uc *TodoUsecase) RegisterTask(task request.Task) (*response.TodoDetailResponse, error) {
+	registerTask := model.TaskManagement{
+		PersonName:   task.PersonName,
+		TaskName:     task.TaskName,
+		DeadlineDate: task.DeadlineDate,
+		TaskStatus:   task.TaskStatus,
+	}
+
+	ctx := context.Background()
+	err := registerTask.InsertG(ctx, boil.Infer())
+
+	if err != nil {
+		logger.Error(" %v", err)
+		return nil, e.WithError(err, e.InternalServerError)
+	}
+
+	return &response.TodoDetailResponse{Task: response.Task{
+		TaskId:       registerTask.TaskID,
+		PersonName:   registerTask.PersonName,
+		TaskName:     registerTask.TaskName,
+		DeadlineDate: registerTask.DeadlineDate,
+		TaskStatus:   registerTask.TaskStatus,
+	}}, nil
+}
+
+func (uc *TodoUsecase) DeleteTask(targetTaskId int) error {
 	ctx := context.Background()
 	count, err := model.TaskManagements(model.TaskManagementWhere.TaskID.EQ(targetTaskId)).DeleteAllG(ctx)
 
 	if err != nil {
+		logger.Error(" %v", err)
 		return e.WithError(err, e.InternalServerError)
 	}
 

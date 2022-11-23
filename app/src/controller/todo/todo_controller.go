@@ -22,55 +22,73 @@ func NewTodoController(
 	}
 }
 
-func (ctrl *TodoController) GetTodos(ctx *gin.Context) {
-	todos, err := ctrl.todoUsecase.GetTodos()
+func (ctrl *TodoController) GetTasks(ctx *gin.Context) {
+	response, err := ctrl.todoUsecase.GetTasks()
+
 	if err != nil {
 		appError := e.Cast(err)
 		ctx.JSON(appError.StatusCode, appError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, todos)
+	ctx.JSON(http.StatusOK, response)
 }
 
-func (ctrl *TodoController) GetTodo(ctx *gin.Context) {
+func (ctrl *TodoController) GetTask(ctx *gin.Context) {
+	var uriParam request.UriParam
+
+	if err := ctx.ShouldBindUri(&uriParam); err != nil {
+		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
+		return
+	}
+
+	response, err := ctrl.todoUsecase.GetTask(uriParam.Id)
+
+	if err != nil {
+		appError := e.Cast(err)
+		ctx.JSON(appError.StatusCode, appError)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response)
+}
+
+func (ctrl *TodoController) RegisterTask(ctx *gin.Context) {
+	var requestBody request.Task
+
+	if err := ctx.ShouldBindJSON(&requestBody); err != nil {
+		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
+		return
+	}
+
+	response, err := ctrl.todoUsecase.RegisterTask(requestBody)
+
+	if err != nil {
+		appError := e.Cast(err)
+		ctx.JSON(appError.StatusCode, appError)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response)
+}
+
+func (ctrl *TodoController) UpdateTask(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, "")
+}
+
+func (ctrl *TodoController) DeleteTask(ctx *gin.Context) {
 	var uriParam request.UriParam
 	if err := ctx.ShouldBindUri(&uriParam); err != nil {
 		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
 		return
 	}
 
-	todo, err := ctrl.todoUsecase.GetTodo(uriParam.Id)
+	err := ctrl.todoUsecase.DeleteTask(uriParam.Id)
 	if err != nil {
 		appError := e.Cast(err)
 		ctx.JSON(appError.StatusCode, appError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, todo)
-}
-
-func (ctrl *TodoController) RegisterTodo(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, "")
-}
-
-func (ctrl *TodoController) UpdateTodo(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, "")
-}
-
-func (ctrl *TodoController) DeleteTodo(ctx *gin.Context) {
-	var uriParam request.UriParam
-	if err := ctx.ShouldBindUri(&uriParam); err != nil {
-		ctx.JSON(e.InvalidRequestParameters.StatusCode, e.InvalidRequestParameters)
-		return
-	}
-
-	err := ctrl.todoUsecase.DeleteTodo(uriParam.Id)
-	if err != nil {
-		appError := e.Cast(err)
-		ctx.JSON(appError.StatusCode, appError)
-		return
-	}
-
-	ctx.JSON(http.StatusOK, response.TaskDeleteResponse{})
+	ctx.JSON(http.StatusOK, response.TodoDeleteResponse{})
 }

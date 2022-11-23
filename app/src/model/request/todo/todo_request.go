@@ -1,6 +1,8 @@
 package todo
 
-import "time"
+import (
+	"github.com/volatiletech/null/v8"
+)
 
 type (
 	UriParam struct {
@@ -10,7 +12,7 @@ type (
 	Task struct {
 		PersonName   string    `json:"person_name"`
 		TaskName     string    `json:"task_name"`
-		DeadlineDate time.Time `json:"deadline_date"`
+		DeadlineDate null.Time `json:"deadline_date"`
 		TaskStatus   string    `json:"task_dtatus"`
 	}
 )
