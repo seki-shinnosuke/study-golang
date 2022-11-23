@@ -4,12 +4,16 @@ src
 ├── cmd             //各アプリケーションのmain関数を配置
 │   ├── api
 │   └── batch
+├── code            //ENUMチックなコード定義を配置
 ├── config
 │   ├── config.go   //Viperを利用した環境変数の設定
 │   └── database.go //RDBの接続設定
-├── model         
-│   └── db          //SQLBoilerを利用したORM
 ├── controller      //各機能のコントローラーを配置
+├── error           //カスタマイズしたエラーコード
+├── model
+│   ├── db          //SQLBoilerを利用したORM
+│   ├── request     //REST APIのリクエスト構造を配置
+│   └── response    //REST APIのレスポンス構造を配置
 ├── server
 │   ├── server.go   //Ginを利用したREST APIの設定
 │   └── wire.go     //wireを利用したDIの設定
