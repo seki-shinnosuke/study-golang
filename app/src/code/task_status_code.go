@@ -17,6 +17,8 @@ var (
 func TaskStatusCodeValues() []taskStatusCode {
 	values := make([]taskStatusCode, 0)
 	values = append(values, NO_PROCESSING)
+	values = append(values, PROCESSING)
+	values = append(values, DONE)
 	return values
 }
 

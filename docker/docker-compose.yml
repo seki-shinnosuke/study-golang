@@ -30,10 +30,21 @@ services:
       - ../app:/app
       - ../database:/database
       - ../graphql:/graphql
-    env_file:
-      - ../app/src/app.env
-    environment:
-      - RDB_HOST=mysql-db:23306
+
+  mysql-db-junit:
+    depends_on:
+      - mysql-db
+    image: mysql-db:1.0
+    container_name: mysql-db-junit
+    command: --port 13306
+    networks:
+      - study-golang
+    ports:
+      - "13306:13306"
+    volumes:
+      - ../database/ddl/00_create_database.sql:/docker-entrypoint-initdb.d/00_create_database.sql
+      - ../database/ddl/01_create_user.sql:/docker-entrypoint-initdb.d/01_create_user.sql
+      - ../database/ddl/02_create_table.sql:/docker-entrypoint-initdb.d/02_create_table.sql
 
 networks:
   study-golang:

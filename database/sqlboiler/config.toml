@@ -1,10 +1,10 @@
 [mysql]
-  host       = "mysql-db"
-  port       = 23306
-  dbname     = "study_golang"
-  user       = "golang-user"
-  pass       = "golang-pass"
-  sslmode    = "false"
-  whitelist = [
-    "task_management"
-  ]
+host       = "mysql-db"
+port       = 23306
+dbname     = "study_golang"
+user       = "golang-user"
+pass       = "golang-pass"
+sslmode    = "false"
+whitelist = [
+  "task_management"
+]
